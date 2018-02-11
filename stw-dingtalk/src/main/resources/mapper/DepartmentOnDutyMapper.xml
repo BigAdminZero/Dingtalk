@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.dao.DepartmentOnDutyMapper">
+  <resultMap id="BaseResultMap" type="com.dingtalk.vo.DepartmentOnDuty">
+    <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="type_onduty" jdbcType="CHAR" property="typeOnduty" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+  </resultMap>
+  
+  
+  <select id="selectByDepartmentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select distinct s.employee_id employee_id,type_onduty,employee_name,date from employee e,schedule_table s 
+    where  e.department_id = #{departmentId} and s.employee_id = e.employee_id  and 
+     if_onduty = 1;
+  </select>
+  
+</mapper>

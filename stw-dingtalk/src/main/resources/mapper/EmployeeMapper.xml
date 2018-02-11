@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.dingtalk.bean.Employee">
+    <id column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+    <result column="department_id" jdbcType="BIGINT" property="departmentId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    employee_id, employee_name, department_id
+  </sql>
+  <!-- 获取全部员工的id -->
+ <select id="selectAllEmployeeId" resultType="java.lang.String">
+ select employee_id
+ from employee;
+ </select>
+ <!-- 根据员工Id获取员工 -->
+ <select id="selectByemployeeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+ select *
+ from employee where employee_id = #{employeeId};
+ </select>
+ <!-- 通过部门id获取员工信息 -->
+ <select id="selectEmployeeByDepartmentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+ select *
+ from employee
+ where department_id = #{departmentId};
+ </select>
+ <select id="selectEmployeeIdBydeptId" parameterType="java.lang.Long" resultType="java.lang.String">
+ select employee_id
+ from employee where department_id = #{departmentId};
+ </select>
+  <select id="selectByExample" parameterType="com.dingtalk.bean.EmployeeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from employee
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dingtalk.bean.EmployeeExample">
+    delete from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dingtalk.bean.Employee">
+    insert into employee (employee_id, employee_name, department_id
+      )
+    values (#{employeeId,jdbcType=BIGINT}, #{employeeName,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dingtalk.bean.Employee">
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        employee_id,
+      </if>
+      <if test="employeeName != null">
+        employee_name,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="employeeName != null">
+        #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertEmployee" parameterType="com.dingtalk.bean.Employee">
+  insert into employee(employee_id, employee_name, department_id) 
+  values(#{employeeId},#{employeeName},#{departmentId});
+  
+  </insert>
+  <select id="countByExample" parameterType="com.dingtalk.bean.EmployeeExample" resultType="java.lang.Long">
+    select count(*) from employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update employee
+    <set>
+      <if test="record.employeeId != null">
+        employee_id = #{record.employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.employeeName != null">
+        employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentId != null">
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update employee
+    set employee_id = #{record.employeeId,jdbcType=BIGINT},
+      employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      department_id = #{record.departmentId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dingtalk.bean.Employee">
+    update employee
+    <set>
+      <if test="employeeName != null">
+        employee_name = #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dingtalk.bean.Employee">
+    update employee
+    set employee_name = #{employeeName,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=INTEGER}
+    where employee_id = #{employeeId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByDepartmentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	 select *
+	 from employee
+	 where department_id = #{departmentId};
+  </select>
+  <delete id="delAllEmployee">
+  delete from employee;
+  </delete>
+  <select id="selectAllEmployee" resultMap="BaseResultMap">
+  select * from employee;
+  </select>
+</mapper>

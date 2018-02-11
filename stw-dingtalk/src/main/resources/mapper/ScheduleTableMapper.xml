@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.dao.ScheduleTableMapper">
+  <resultMap id="BaseResultMap" type="com.dingtalk.bean.ScheduleTable">
+    <id column="schedule_table_id" jdbcType="INTEGER" property="scheduleTableId" />
+    <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="if_onduty" jdbcType="CHAR" property="ifOnduty" />
+    <result column="type_onduty" jdbcType="CHAR" property="typeOnduty" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    schedule_table_id, "employee _id", date, start_time, end_time, if_onduty, type_onduty
+  </sql>
+  <select id="selectByExample" parameterType="com.dingtalk.bean.ScheduleTableExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedule_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select *
+  	from schedule_table
+  	where date = #{searchDate};
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule_table
+    where schedule_table_id = #{scheduleTableId,jdbcType=INTEGER}
+  </select>
+  <select id="ifExist" parameterType="com.dingtalk.bean.ScheduleTable" resultMap="BaseResultMap">
+  select * from schedule_table where date = #{date} and employee_id = #{employeeId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from schedule_table
+    where schedule_table_id = #{scheduleTableId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dingtalk.bean.ScheduleTableExample">
+    delete from schedule_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dingtalk.bean.ScheduleTable">
+    insert into schedule_table (schedule_table_id, "employee _id", date, 
+      start_time, end_time, if_onduty, 
+      type_onduty)
+    values (#{scheduleTableId,jdbcType=INTEGER}, #{employeeId,jdbcType=BIGINT}, #{date,jdbcType=DATE}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{ifOnduty,jdbcType=CHAR}, 
+      #{typeOnduty,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dingtalk.bean.ScheduleTable">
+    insert into schedule_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scheduleTableId != null">
+        schedule_table_id,
+      </if>
+      <if test="employeeId != null">
+        "employee _id",
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="ifOnduty != null">
+        if_onduty,
+      </if>
+      <if test="typeOnduty != null">
+        type_onduty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scheduleTableId != null">
+        #{scheduleTableId,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ifOnduty != null">
+        #{ifOnduty,jdbcType=CHAR},
+      </if>
+      <if test="typeOnduty != null">
+        #{typeOnduty,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+<!--  初始化排班表 -->
+ <insert id="initScheduleTable" parameterType="com.dingtalk.bean.ScheduleTable">
+ insert into schedule_table (employee_id, date,start_time, end_time)
+    values (#{employeeId,jdbcType=BIGINT}, #{date,jdbcType=DATE}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+ </insert>
+ 
+ <!--   根据部门Id查询排班表 -->
+<select id="selectScheduleTableByDeptmentId"  parameterType="java.lang.String" resultMap="BaseResultMap">
+SELECT * FROM schedule_table st
+WHERE st.employee_id IN
+(SELECT employee_id FROM employee WHERE department_id =#{deptmentId})
+</select>
+  
+<select id="selectByEmployeeIdAnDate" parameterType="com.dingtalk.vo.EmployeeIdAndSearchdate" resultMap="BaseResultMap">
+select * from schedule_table where employee_id = #{employeeId} and Date between #{startDate} and #{endDate};
+</select>
+<!-- 根据日期和员工号更新排班表 -->
+<update id="updateScheduleTableByEmployeeIdAndDate"  parameterType="com.dingtalk.bean.ScheduleTable">
+	update schedule_table
+	set start_time=#{startTime},end_time=#{endTime}
+	where employee_id=#{employeeId} and date=#{date}
+</update>
+ 
+  <select id="countByExample" parameterType="com.dingtalk.bean.ScheduleTableExample" resultType="java.lang.Long">
+    select count(*) from schedule_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update schedule_table
+    <set>
+      <if test="record.scheduleTableId != null">
+        schedule_table_id = #{record.scheduleTableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.employeeId != null">
+        "employee _id" = #{record.employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ifOnduty != null">
+        if_onduty = #{record.ifOnduty,jdbcType=CHAR},
+      </if>
+      <if test="record.typeOnduty != null">
+        type_onduty = #{record.typeOnduty,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update schedule_table
+    set schedule_table_id = #{record.scheduleTableId,jdbcType=INTEGER},
+      "employee _id" = #{record.employeeId,jdbcType=BIGINT},
+      date = #{record.date,jdbcType=DATE},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      if_onduty = #{record.ifOnduty,jdbcType=CHAR},
+      type_onduty = #{record.typeOnduty,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dingtalk.bean.ScheduleTable">
+    update schedule_table
+    <set>
+      <if test="employeeId != null">
+        "employee _id" = #{employeeId,jdbcType=BIGINT},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ifOnduty != null">
+        if_onduty = #{ifOnduty,jdbcType=CHAR},
+      </if>
+      <if test="typeOnduty != null">
+        type_onduty = #{typeOnduty,jdbcType=CHAR},
+      </if>
+    </set>
+    where schedule_table_id = #{scheduleTableId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dingtalk.bean.ScheduleTable">
+    update schedule_table
+    set "employee _id" = #{employeeId,jdbcType=BIGINT},
+      date = #{date,jdbcType=DATE},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      if_onduty = #{ifOnduty,jdbcType=CHAR},
+      type_onduty = #{typeOnduty,jdbcType=CHAR}
+    where schedule_table_id = #{scheduleTableId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByEmployeeId" parameterType="String" resultMap="BaseResultMap">
+  	select * from schedule_table
+  	where employee_id=#{employeeId}
+  </select>
+  
+<select id="getScheduleTableByEmployeeIdAndSearchdate" resultMap="BaseResultMap">
+  	select * from schedule_table
+  	where employee_id=#{employeeId} and date=#{SearchDate}
+  </select>
+  
+<update id="updateByTableId" parameterType="com.dingtalk.bean.ScheduleTable">
+	
+	update schedule_table
+	set start_time=#{startTime},end_time=#{endTime},if_onduty=#{ifOnduty},type_onduty=#{typeOnduty}
+	where schedule_table_id=#{scheduleTableId}
+
+</update>
+  <update id="updateByDepartment" parameterType="com.dingtalk.bean.ScheduleTable">
+  update schedule_table set type_onduty=#{typeOnduty},if_onduty='1' where  employee_id =#{employeeId}  and date=#{date};
+  </update>
+<update id = "updateByDepartmentOnDuty" parameterType="com.dingtalk.bean.ScheduleTable">
+ update schedule_table set type_onduty='1',if_onduty='2' where  employee_id = #{employeeId} and date=#{date};
+</update>
+<update id="updateByHoliday" parameterType="com.dingtalk.bean.Holiday">
+ update schedule_table
+ set start_time=#{startTime},end_time=#{endTime},if_onduty='2',type_onduty='1'
+ where date>=#{startDate} AND date&lt;=#{endDate} 
+</update>
+
+</mapper>

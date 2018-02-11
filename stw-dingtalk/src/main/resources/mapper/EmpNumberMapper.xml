@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.dao.EmpNumberMapper">
+  <resultMap id="BaseResultMap" type="com.dingtalk.bean.EmpNumber">
+  <id column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="employee_name" jdbcType="INTEGER" property="employeeName" />
+  </resultMap>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from employee_number order by number asc
+  </select>
+  
+  <delete id="deleteByEmpNumber" parameterType="java.lang.String">
+  	delete from employee_number where number=#{number}
+  </delete>
+  
+  <insert id="insertEmpNumber" parameterType="com.dingtalk.bean.EmpNumber">
+  	insert into employee_number(number,employee_name,employee_id) values(#{number},#{employeeName},#{employeeId})
+  </insert>
+  
+</mapper>

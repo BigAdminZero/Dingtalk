@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.dao.OndutyGroupMapper">
+  <resultMap id="BaseResultMap" type="com.dingtalk.bean.OndutyGroup">
+    <id column="onduty_group_id" jdbcType="INTEGER" property="ondutyGroupId" />
+    <result column="department_id" jdbcType="BIGINT" property="departmentId" />
+    <result column="onduty_group_name" jdbcType="VARCHAR" property="ondutyGroupName" />
+    <result column="employee_id" jdbcType="LONGVARCHAR" property="employeeId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    onduty_group_id, "onduty_group _name", "employee _id"
+  </sql>
+<select id="selectOndutyGroupByDepartmentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	select *
+	from onduty_group
+	where department_id = #{departmentId}
+</select>
+<select id="selectOndutyGroupByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+select *
+	from onduty_group
+	where onduty_group_id = #{ondutyGroupId}
+</select>
+  <select id="selectByExample" parameterType="com.dingtalk.bean.OndutyGroupExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from onduty_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from onduty_group
+    where onduty_group_id = #{ondutyGroupId,jdbcType=INTEGER}
+  </select>
+<!-- 按值班组id删除值班组 -->
+<delete id="deleteOndutyGroup"  parameterType="java.lang.Integer">
+delete from onduty_group
+    where onduty_group_id = #{ondutyGroupId}
+</delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from onduty_group
+    where onduty_group_id = #{ondutyGroupId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dingtalk.bean.OndutyGroupExample">
+    delete from onduty_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+<!-- 新增值班组 -->
+<insert id="insertOndutyGroup"  parameterType="com.dingtalk.bean.OndutyGroup">
+ insert into onduty_group (onduty_group_name,employee_id,department_id)
+ values(#{ondutyGroupName},#{employeeId},#{departmentId});
+</insert>
+  <insert id="insert" parameterType="com.dingtalk.bean.OndutyGroup">
+    insert into onduty_group (onduty_group_id, "onduty_group _name", "employee _id"
+      )
+    values (#{ondutyGroupId,jdbcType=INTEGER}, #{ondutyGroupName,jdbcType=VARCHAR}, #{employeeId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dingtalk.bean.OndutyGroup">
+    insert into onduty_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ondutyGroupId != null">
+        onduty_group_id,
+      </if>
+      <if test="ondutyGroupName != null">
+        "onduty_group _name",
+      </if>
+      <if test="employeeId != null">
+        "employee _id",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ondutyGroupId != null">
+        #{ondutyGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="ondutyGroupName != null">
+        #{ondutyGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dingtalk.bean.OndutyGroupExample" resultType="java.lang.Long">
+    select count(*) from onduty_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update onduty_group
+    <set>
+      <if test="record.ondutyGroupId != null">
+        onduty_group_id = #{record.ondutyGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ondutyGroupName != null">
+        "onduty_group _name" = #{record.ondutyGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.employeeId != null">
+        "employee _id" = #{record.employeeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update onduty_group
+    set onduty_group_id = #{record.ondutyGroupId,jdbcType=INTEGER},
+      "onduty_group _name" = #{record.ondutyGroupName,jdbcType=VARCHAR},
+      "employee _id" = #{record.employeeId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+ <!-- 按值班组id更新值班组成员 -->
+ <update id="updateOndutyGroupEmployeeByGroupId" parameterType="com.dingtalk.bean.OndutyGroup">
+ update onduty_group
+ set employee_id = #{employeeId} 
+ where onduty_group_id =#{ondutyGroupId}
+ </update> 
+  <update id="updateByPrimaryKeySelective" parameterType="com.dingtalk.bean.OndutyGroup">
+    update onduty_group
+    <set>
+      <if test="ondutyGroupName != null">
+        "onduty_group _name" = #{ondutyGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeId != null">
+        "employee _id" = #{employeeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where onduty_group_id = #{ondutyGroupId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.dingtalk.bean.OndutyGroup">
+    update onduty_group
+    set "onduty_group _name" = #{ondutyGroupName,jdbcType=VARCHAR},
+      "employee_id" = #{employeeId,jdbcType=BIGINT}
+    where onduty_group_id = #{ondutyGroupId,jdbcType=INTEGER}
+  </update>
+</mapper>
