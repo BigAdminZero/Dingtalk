@@ -19,8 +19,8 @@ public class AttendanceAnalysisService implements IAttendanceAnalysisService{
 	 * 考勤比对
 	 * 
 	 */
-		private String corpid = "ding6d831f98a66c8c8535c2f4657eb6378f";
-		private String corpsecret = "3LLLfu4Xs81XOOpnXY8l4Ta-Yjwbkae47yQgktL5r6zQYBLGHRXahM9y0POJUzkz";
+		private String corpid = "***************************";
+		private String corpsecret = "********************************************************";
 		public List<String> showAttendance(String employeeId,String starttime,String endtime){
 			DingHttps dh =new DingHttps();
 			List<String> attendanceRecord = new ArrayList<String>();
